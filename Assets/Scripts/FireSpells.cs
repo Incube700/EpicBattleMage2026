@@ -4,6 +4,6 @@ namespace DefaultNamespace
 {
     public class FireSpells
     {
-        Update
+       
     }
 }
