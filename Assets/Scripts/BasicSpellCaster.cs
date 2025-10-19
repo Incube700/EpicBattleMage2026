@@ -3,18 +3,18 @@ using UnityEngine.InputSystem;
 
 public class BasicSpellCaster : MonoBehaviour
 {
-    [Header("References")]
-    [SerializeField] private MouseAimerTopDown aimer;     // Компонент наведения на мышь на игроке
-    [SerializeField] private Transform muzzle;            // Точка выстрела (дочерний объект у Player)
+    [Header("References")] [SerializeField]
+    private MouseAimerTopDown aimer; // Компонент наведения на мышь на игроке
+
+    [SerializeField] private Transform muzzle; // Точка выстрела (дочерний объект у Player)
     [SerializeField] private GameObject projectilePrefab; // Префаб с компонентом Projectile
 
-    [Header("Tuning")]
-    [SerializeField] private float fireCooldown = 0.22f;  // КД между выстрелами
+    [Header("Tuning")] [SerializeField] private float fireCooldown = 0.22f; // КД между выстрелами
 
     private float _cooldown;
     private ParticleSystem _muzzleFlash;
 
-    
+
     private void Awake()
     {
         if (muzzle != null) muzzle.TryGetComponent(out _muzzleFlash);
@@ -35,7 +35,7 @@ public class BasicSpellCaster : MonoBehaviour
 
 
     private void TryShoot()
-   
+
     {
         if (_cooldown > 0f) return;
         if (aimer == null || muzzle == null || projectilePrefab == null) return;
@@ -57,3 +57,4 @@ public class BasicSpellCaster : MonoBehaviour
 
         _cooldown = fireCooldown;
     }
+}
