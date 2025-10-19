@@ -57,4 +57,3 @@ public class BasicSpellCaster : MonoBehaviour
 
         _cooldown = fireCooldown;
     }
-}//chjxyj gjxbybnm!
