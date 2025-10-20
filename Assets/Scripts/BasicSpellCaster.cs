@@ -3,21 +3,21 @@ using UnityEngine.InputSystem;
 
 public class BasicSpellCaster : MonoBehaviour
 {
-    [Header("References")] [SerializeField]
-    private MouseAimerTopDown aimer; // Компонент наведения на мышь на игроке
+    [Header("References")]
+    [SerializeField] private MouseAimerTopDown aimer;
+    [SerializeField] private Transform muzzle;
+    [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private ParticleSystem muzzleFlash;   // укажи PS тут (может быть дочерним у Muzzle)
 
-    [SerializeField] private Transform muzzle; // Точка выстрела (дочерний объект у Player)
-    [SerializeField] private GameObject projectilePrefab; // Префаб с компонентом Projectile
-
-    [Header("Tuning")] [SerializeField] private float fireCooldown = 0.22f; // КД между выстрелами
+    [Header("Tuning")]
+    [SerializeField] private float fireCooldown = 0.22f;
 
     private float _cooldown;
-    private ParticleSystem _muzzleFlash;
-
 
     private void Awake()
     {
-        if (muzzle != null) muzzle.TryGetComponent(out _muzzleFlash);
+        if (muzzleFlash == null && muzzle != null)
+            muzzleFlash = muzzle.GetComponentInChildren<ParticleSystem>(true);
     }
 
     private void Update()
@@ -25,35 +25,25 @@ public class BasicSpellCaster : MonoBehaviour
         if (_cooldown > 0f) _cooldown -= Time.deltaTime;
     }
 
-    // Input System (Player Input → Behavior: Send Messages) → Action: E1Tap (Mouse Left Button)
+    // Input System → Send Messages → Action: E1Tap
     public void OnE1Tap(InputValue value)
     {
-        Debug.Log("E1Tap pressed");
         if (!value.isPressed) return;
         TryShoot();
     }
 
-
     private void TryShoot()
-
     {
-        if (_cooldown > 0f) return;
-        if (aimer == null || muzzle == null || projectilePrefab == null) return;
-
-        Vector3 dir = aimer.AimDirection.sqrMagnitude > 0.0001f
-            ? aimer.AimDirection
-            : transform.forward;
+        if (_cooldown > 0f || aimer == null || muzzle == null || projectilePrefab == null) return;
 
         var go = Instantiate(projectilePrefab, muzzle.position, Quaternion.identity);
-        if (!go.TryGetComponent<Projectile>(out var proj))
-        {
-            Destroy(go);
-            return;
-        }
+        var proj = go.GetComponent<Projectile>();
+        if (proj == null) { Debug.LogError("Prefab has no Projectile"); Destroy(go); return; }
 
+        var dir = aimer.AimDirection.sqrMagnitude > 0.0001f ? aimer.AimDirection : transform.forward;
         proj.Fire(transform, dir);
 
-        if (_muzzleFlash != null) _muzzleFlash.Play();
+        if (muzzleFlash != null) muzzleFlash.Play(true);
 
         _cooldown = fireCooldown;
     }
