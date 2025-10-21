@@ -202,3 +202,4 @@ MonoBehaviour:
   speed: 30
   damage: 20
   lifetime: 2.5
+  impactPrefab: {fileID: 0}
