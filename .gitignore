@@ -1,0 +1,12 @@
+/Assets/
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Ll]ogs/
+[Uu]serSettings/
+[Mm]emoryCaptures/
+.vs/
+.idea/
+.DS_Store
+*.csproj
+*.sln
