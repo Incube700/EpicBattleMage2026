@@ -1,4 +1,0 @@
-repository "EpicMageBattle/EpicMageBattle@13469841769178@cloud"
-  path "/"
-    br "/main"
-    co "/main"
