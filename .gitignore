@@ -10,3 +10,9 @@
 .DS_Store
 *.csproj
 *.sln
+.plastic/plastic.changes
+/.plastic
+/Packages
+/.plastic
+*.changes
+/.plastic
